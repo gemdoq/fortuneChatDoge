@@ -6,6 +6,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>운세보는 챗도지</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css"
+        integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
         body {
             margin: 0;
@@ -71,7 +74,7 @@
             color: blue;
         }
 
-    
+
         .intro-container {
             display: flex;
             flex-direction: column;
@@ -82,6 +85,11 @@
         .intro-container img {
             width: 50%;
             min-width: 300px;
+        }
+
+        #loader {
+            font-size: 25px;
+            text-align: center;
         }
     </style>
 </head>
@@ -128,9 +136,12 @@
                 <p class="assistant">운세에 대해서 물어봐 주세요!</p>
             </div>
         </div>
+        <div id="loader" class="loader" style="display: none;">
+            <i class="fa fa-spinner fa-spin"></i>
+        </div>
         <div class="chat-input">
             <input type="text" placeholder="Type your message here...">
-            <button>Send</button>
+            <button id="btn" onclick="spinner()">Send</button>
         </div>
     </div>
     <script>
@@ -138,6 +149,10 @@
         let userMessages = [];
         let assistantMessages = [];
         let myDateTime = ''
+
+        function spinner() {
+            document.getElementById('loader').style.display = "block";
+        }
 
         function start() {
             const date = document.getElementById('date').value;
@@ -158,7 +173,7 @@
             chatMessage.classList.add('chat-message');
             chatMessage.innerHTML = `<p>${chatInput.value}</p>`;
             chatBox.appendChild(chatMessage);
-            
+
             //userMessage 메세지 추가
             userMessages.push(chatInput.value);
 
@@ -177,7 +192,8 @@
             });
 
             const data = await response.json();
-            
+            document.getElementById('loader').style.display = "none";
+
             //assistantMessage 메세지 추가
             assistantMessages.push(data.assistant);
 
