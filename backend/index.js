@@ -1,4 +1,5 @@
-const apiKey = ""
+const apiKey = process.env.apiKey;
+const serverless = require('serverless-http');
 const { Configuration, OpenAIApi } = require("openai");
 const express = require('express')
 var cors = require('cors')
@@ -10,11 +11,11 @@ const configuration = new Configuration({
 const openai = new OpenAIApi(configuration);
 
 //CORS 이슈 해결
-// let corsOptions = {
-//     origin: 'https://www.domain.com',
-//     credentials: true
-// }
-app.use(cors());
+let corsOptions = {
+    origin: 'https://chatdoge123jocoding.pages.dev',
+    credentials: true
+}
+app.use(cors(corsOptions));
 
 //POST 요청 받을 수 있게 만듬
 app.use(express.json()) // for parsing application/json
@@ -56,4 +57,6 @@ app.post('/fortuneTell', async function (req, res) {
     res.json({ "assistant": fortune });
 });
 
-app.listen(3000)
+module.exports.handler = serverless(app);
+
+// app.listen(3000)
